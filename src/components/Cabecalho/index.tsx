@@ -1,9 +1,9 @@
 import React from 'react';
 
-import { Container } from './styles';
+import { TitleContainer } from './styles';
 
 const Cabecalho: React.FC = () => {
-  return <Container>Alura Viagens</Container>;
+  return <TitleContainer>Alura Viagens</TitleContainer>;
 };
 
 export default Cabecalho;
