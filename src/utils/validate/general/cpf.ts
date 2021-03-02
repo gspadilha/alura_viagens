@@ -1,8 +1,8 @@
-export const cpfValidate = (cpf: string) => {
+export const cpf = (value: string) => {
   let Soma = 0;
   let Resto;
 
-  let strCPF = cpf.replace(/\./gi, '').replace('-', '');
+  let strCPF = value.replace(/\./gi, '').replace('-', '');
 
   if (strCPF === '00000000000') return false;
 

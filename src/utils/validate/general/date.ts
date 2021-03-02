@@ -17,21 +17,20 @@ export const dateCompare = (dtIni: string, dtFim: string): number | null => {
   return null;
 };
 
-export const maiorDeIdade = (dt: string): boolean => {
+export const isOver18 = (dt: string): boolean => {
   const hoje = new Date();
 
   const nascimento = new Date(dt);
 
-  //Retorna a diferença entre hoje e a data de nascimento em anos.
+  // Retorna a diferença entre hoje e a data de nascimento em anos.
   let ano = hoje.getFullYear() - nascimento.getFullYear();
 
-  //Retorna a diferença de mês do mês de nascimento para o atual.
+  // Retorna a diferença de mês do mês de nascimento para o atual.
   const m = hoje.getMonth() - nascimento.getMonth();
 
-  //Caso ainda não tenha ultrapassado o dia e o mês
+  // Caso ainda não tenha ultrapassado o dia e o mês
   if (m < 0 || (m === 0 && hoje.getDate() < nascimento.getDate())) {
     ano--;
   }
-
   return ano >= 18 ? true : false;
 };

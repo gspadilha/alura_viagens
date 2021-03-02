@@ -4,13 +4,30 @@ import { IBasicInput } from '../../../props/input';
 import { countries } from '../../../database/countries';
 
 import { InputContainer, LabelContent, InputContent } from './styles';
+import { IBasicChangeEvent } from '../../../props/event';
+import { IMaskTypes, Mask } from '../../../utils/masks';
 
 interface IIinputProps extends IBasicInput {
   label: string;
   classe?: string;
+  withMask?: keyof typeof IMaskTypes;
 }
 
-const Input: React.FC<IIinputProps> = ({ label, classe, ...restProps }) => {
+const Input: React.FC<IIinputProps> = ({
+  label,
+  classe,
+  withMask,
+  onChange,
+  ...restProps
+}) => {
+  const onChangeInside = (event: IBasicChangeEvent) => {
+    if (withMask !== undefined) {
+      event.target.value = Mask[withMask](event.target.value);
+    }
+
+    if (onChange) onChange(event);
+  };
+
   return (
     <>
       {classe === 'paises' && (
@@ -23,7 +40,11 @@ const Input: React.FC<IIinputProps> = ({ label, classe, ...restProps }) => {
 
       <InputContainer>
         <LabelContent htmlFor={restProps.name}>{label}</LabelContent>
-        <InputContent {...restProps} list={`${classe}Default`} />
+        <InputContent
+          {...restProps}
+          list={`${classe}Default`}
+          onChange={onChangeInside}
+        />
       </InputContainer>
     </>
   );

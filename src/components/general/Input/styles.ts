@@ -30,7 +30,6 @@ export const InputContent = styled.input`
   border-radius: 5px;
 
   outline: none;
-  text-transform: uppercase;
 
   padding: 0 0.25rem;
 

@@ -3,8 +3,8 @@ import { AppPropsType } from 'next/dist/next-server/lib/utils';
 import { PropsWithChildren } from 'react';
 import { ThemeProvider } from 'styled-components';
 
-import { GlobalStyle } from '../src/theme/global';
-import { theme } from '../src/theme';
+import { GlobalStyle } from '../../src/theme/global';
+import { theme } from '../../src/theme';
 
 export default function App({
   Component,
