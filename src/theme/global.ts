@@ -1,6 +1,12 @@
 import { createGlobalStyle } from 'styled-components';
 import normalize from 'styled-normalize';
 
+import { ThemeType } from './index';
+
+interface IThemeProps {
+  theme: ThemeType;
+}
+
 export const GlobalStyle = createGlobalStyle`
    ${normalize}
 
@@ -8,11 +14,11 @@ export const GlobalStyle = createGlobalStyle`
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: ${({ theme }) => theme.fontsFamily.robotoRegular};
+    font-family: ${({ theme }: IThemeProps) => theme.fontsFamily.robotoRegular};
   }
 
   body{
-    background-color: ${({ theme }) => theme.colors.primary};
+    background-color: ${({ theme }: IThemeProps) => theme.colors.primary};
     display: flex;
     justify-content: center;
   }
