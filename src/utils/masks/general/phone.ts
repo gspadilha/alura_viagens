@@ -12,6 +12,6 @@ export const phone = (value: string) => {
   } else {
     r = r.replace(/^(\d*)/, '($1');
   }
-  console.log('r.length', r.length);
+
   return r;
 };

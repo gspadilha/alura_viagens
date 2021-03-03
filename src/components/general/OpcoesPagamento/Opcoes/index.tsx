@@ -1,5 +1,5 @@
 import React from 'react';
-import { IBasicButton } from '../../../props/button';
+import { IBasicButton } from '../../../../utils/props/button';
 
 import { OpcaoContainer } from './styles';
 

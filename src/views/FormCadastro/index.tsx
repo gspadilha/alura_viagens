@@ -1,131 +1,51 @@
-import React, { useState } from 'react';
+import React from 'react';
+import Button from '../../components/commons/Button';
+import Input from '../../components/commons/Input';
+import Cabecalho from '../../components/general/Cabecalho';
+import OpcoesPagamento from '../../components/general/OpcoesPagamento';
 import { Grid } from '../../components/layouts/Grid';
-import Cabecalho from '../../components/Cabecalho';
-import Button from '../../components/general/Button';
-import Input from '../../components/general/Input';
-import OpcoesPagamento from '../../components/OpcoesPagamento';
-import { IBasicChangeEvent } from '../../props/event';
-import { IBasicSubmitEvent } from '../../props/submit';
-import { ValidateDate, Validate } from '../../utils/validate';
+import useFormulario from '../../hooks/Formulario';
+import { IBasicSubmitEvent } from '../../utils/props/submit';
+import formValidation from './formValidation';
 
 import { PageContainer, PageSubtitle, ButtonComprarContainer } from './styles';
 
-const formularioInicial = {
-  dataSaida: '',
-  dataRetorno: '',
-  localOrigem: '',
-  localDestino: '',
-  tipoPagamento: '',
-  nome: '',
-  sobrenome: '',
-  pais: '',
-  dataNascimento: '',
-  cpf: '',
-  email: '',
-  telefone: '',
-};
-
-let formulariosErrors: String[] = [];
-
 const FormCadastro: React.FC = () => {
-  const [formulario, setFormulario] = useState(formularioInicial);
+  const formik = useFormulario({
+    initialFormFields: {
+      dataSaida: '',
+      dataRetorno: '',
+      localOrigem: '',
+      localDestino: '',
+      tipoPagamento: '',
+      nome: '',
+      sobrenome: '',
+      pais: '',
+      dataNascimento: '',
+      cpf: '',
+      email: '',
+      telefone: '',
+    },
+    validateOnlyOnSubmit: true,
+    validate: formValidation,
+  });
 
-  const testarTodosCamposInformados = () => {
-    let isValid = true;
-    formulariosErrors = [];
-
-    Object.entries(formulario).forEach(item => {
-      const key = item[0];
-      const value = item[1];
-
-      if (value === '') {
-        isValid = false;
-      }
-    });
-
-    if (!isValid) {
-      formulariosErrors.push('Todos os campos devem ser informados!');
-    }
-
-    return isValid;
-  };
-
-  const testarCamposIndividuais = () => {
-    let isValid = true;
-    formulariosErrors = [];
-
-    const {
-      tipoPagamento,
-      dataSaida,
-      dataRetorno,
-      dataNascimento,
-      cpf,
-      telefone,
-      email,
-    } = formulario;
-
-    if (tipoPagamento === '') {
-      formulariosErrors.push('Selecione uma opção de pagamento válida!');
-      isValid = false;
-    }
-
-    if (ValidateDate.dateCompare(dataSaida, dataRetorno) === -1) {
-      formulariosErrors.push(
-        'Data de retorno deve ser posterior a Data de saída!',
-      );
-      isValid = false;
-    }
-
-    if (!ValidateDate.isOver18(dataNascimento)) {
-      formulariosErrors.push('Usuário deve ser maior de idade!');
-      isValid = false;
-    }
-
-    if (!Validate.cpf(cpf)) {
-      formulariosErrors.push('CPF Inválido!');
-      isValid = false;
-    }
-
-    if (!Validate.email(email)) {
-      formulariosErrors.push('Email Inválido!');
-      isValid = false;
-    }
-
-    if (!Validate.phone(telefone)) {
-      formulariosErrors.push('Telefone Inválido!');
-      isValid = false;
-    }
-
-    return isValid;
+  const handleOpcoesPagamento = (tipo: string | number) => {
+    formik.values.tipoPagamento = tipo;
   };
 
   const handleSubmit = (event: IBasicSubmitEvent) => {
-    let canSubmit = true;
+    event.preventDefault();
 
-    canSubmit = testarTodosCamposInformados();
-
-    if (canSubmit) {
-      canSubmit = testarCamposIndividuais();
-    }
+    const canSubmit = formik.handleSubmit(formik.values);
 
     if (!canSubmit) {
-      alert(formulariosErrors.join('\n\n'));
+      alert('Erros foram encontrados');
     }
 
     if (canSubmit) {
-      alert('Formulário enviado com sucesso!');
+      alert('Enviado com sucesso');
     }
-
-    event.preventDefault();
-  };
-
-  const handleChangeInput = (event: IBasicChangeEvent) => {
-    const { name, value } = event.target;
-    setFormulario({ ...formulario, [name]: value });
-  };
-
-  const handleOpcoesPagamento = (tipoSelecionado: string) => {
-    setFormulario({ ...formulario, tipoPagamento: tipoSelecionado });
   };
 
   return (
@@ -146,8 +66,9 @@ const FormCadastro: React.FC = () => {
                 label="Data de saída"
                 type="date"
                 name="dataSaida"
-                value={formulario.dataSaida}
-                onChange={handleChangeInput}
+                value={formik.values.dataSaida}
+                error={formik.errors.dataSaida}
+                onChange={formik.handleChange}
               />
             </Grid.Col>
 
@@ -156,8 +77,9 @@ const FormCadastro: React.FC = () => {
                 label="Data de retorno"
                 type="date"
                 name="dataRetorno"
-                value={formulario.dataRetorno}
-                onChange={handleChangeInput}
+                value={formik.values.dataRetorno}
+                error={formik.errors.dataRetorno}
+                onChange={formik.handleChange}
               />
             </Grid.Col>
           </Grid.Row>
@@ -167,8 +89,9 @@ const FormCadastro: React.FC = () => {
               <Input
                 label="Local de origem"
                 name="localOrigem"
-                value={formulario.localOrigem}
-                onChange={handleChangeInput}
+                value={formik.values.localOrigem}
+                error={formik.errors.localOrigem}
+                onChange={formik.handleChange}
                 withMask="stru"
               />
             </Grid.Col>
@@ -177,8 +100,9 @@ const FormCadastro: React.FC = () => {
               <Input
                 label="Local de destino"
                 name="localDestino"
-                value={formulario.localDestino}
-                onChange={handleChangeInput}
+                value={formik.values.localDestino}
+                error={formik.errors.localDestino}
+                onChange={formik.handleChange}
                 withMask="stru"
               />
             </Grid.Col>
@@ -192,7 +116,10 @@ const FormCadastro: React.FC = () => {
 
           <Grid.Row>
             <Grid.Col value={{ xs: 12, md: 6 }}>
-              <OpcoesPagamento onSelectType={handleOpcoesPagamento} />
+              <OpcoesPagamento
+                onSelectType={handleOpcoesPagamento}
+                error={formik.errors.tipoPagamento}
+              />
             </Grid.Col>
           </Grid.Row>
 
@@ -207,8 +134,9 @@ const FormCadastro: React.FC = () => {
               <Input
                 label="Nome"
                 name="nome"
-                value={formulario.nome}
-                onChange={handleChangeInput}
+                value={formik.values.nome}
+                error={formik.errors.nome}
+                onChange={formik.handleChange}
                 withMask="stru"
               />
             </Grid.Col>
@@ -219,8 +147,9 @@ const FormCadastro: React.FC = () => {
               <Input
                 label="Sobrenome"
                 name="sobrenome"
-                value={formulario.sobrenome}
-                onChange={handleChangeInput}
+                value={formik.values.sobrenome}
+                error={formik.errors.sobrenome}
+                onChange={formik.handleChange}
                 withMask="stru"
               />
             </Grid.Col>
@@ -231,9 +160,10 @@ const FormCadastro: React.FC = () => {
               <Input
                 label="País de residência"
                 name="pais"
-                value={formulario.pais}
-                onChange={handleChangeInput}
-                classe="paises"
+                value={formik.values.pais}
+                error={formik.errors.pais}
+                onChange={formik.handleChange}
+                withDefaultList="paises"
               />
             </Grid.Col>
 
@@ -242,8 +172,9 @@ const FormCadastro: React.FC = () => {
                 label="Data de nascimento"
                 type="date"
                 name="dataNascimento"
-                value={formulario.dataNascimento}
-                onChange={handleChangeInput}
+                value={formik.values.dataNascimento}
+                error={formik.errors.dataNascimento}
+                onChange={formik.handleChange}
               />
             </Grid.Col>
           </Grid.Row>
@@ -253,8 +184,9 @@ const FormCadastro: React.FC = () => {
               <Input
                 label="CPF"
                 name="cpf"
-                value={formulario.cpf}
-                onChange={handleChangeInput}
+                value={formik.values.cpf}
+                error={formik.errors.cpf}
+                onChange={formik.handleChange}
                 withMask="cpf"
               />
             </Grid.Col>
@@ -265,8 +197,9 @@ const FormCadastro: React.FC = () => {
               <Input
                 label="Email"
                 name="email"
-                value={formulario.email}
-                onChange={handleChangeInput}
+                value={formik.values.email}
+                error={formik.errors.email}
+                onChange={formik.handleChange}
                 data-mask="email"
               />
             </Grid.Col>
@@ -277,8 +210,9 @@ const FormCadastro: React.FC = () => {
               <Input
                 label="Telefone"
                 name="telefone"
-                value={formulario.telefone}
-                onChange={handleChangeInput}
+                value={formik.values.telefone}
+                error={formik.errors.telefone}
+                onChange={formik.handleChange}
                 withMask="phone"
               />
             </Grid.Col>
