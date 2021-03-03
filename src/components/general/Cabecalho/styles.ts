@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import { breakpointsMedia } from '../../theme/utils/breakpointsMedia';
+import { breakpointsMedia } from '../../../theme/utils/breakpointsMedia';
 
 export const TitleContainer = styled.p`
   font-family: ${({ theme }) => theme.fontsFamily.pattayaRegular}, sans-serif;

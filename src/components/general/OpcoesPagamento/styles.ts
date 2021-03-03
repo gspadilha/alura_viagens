@@ -6,6 +6,7 @@ export const PagamentoContainer = styled.section`
   justify-content: space-between;
 
   height: 5rem;
+  margin: 0 0.25rem;
 
   border-width: 1px;
   border-color: ${({ theme }) => theme.colors.primary};
@@ -36,4 +37,10 @@ export const PagamentoContainer = styled.section`
       height: 3rem;
     }
   }
+`;
+
+export const InputError = styled.span`
+  padding-left: 0.5rem;
+  font-size: 0.75rem;
+  color: red;
 `;

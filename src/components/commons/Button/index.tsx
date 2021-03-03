@@ -1,7 +1,6 @@
 import React from 'react';
-import { IBasicButton } from '../../../props/button';
-
 import { ButtonContainer } from './styles';
+import { IBasicButton } from '../../../utils/props/button';
 
 interface IButtonProps extends IBasicButton {
   loading?: boolean;

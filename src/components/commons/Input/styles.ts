@@ -12,6 +12,8 @@ export const InputContainer = styled.div`
 export const LabelContent = styled.label`
   padding-bottom: 0.1rem;
 
+  position: relative;
+
   font-size: 1.125rem;
   font-style: normal;
   font-weight: 400;
@@ -23,6 +25,8 @@ export const LabelContent = styled.label`
 export const InputContent = styled.input`
   width: 100%;
   height: 2rem;
+
+  position: relative;
 
   border-width: 1px;
   border-color: ${({ theme }) => theme.colors.primary};
@@ -36,4 +40,13 @@ export const InputContent = styled.input`
   &:focus {
     box-shadow: 0 0 5px ${({ theme }) => theme.colors.primary};
   }
+`;
+
+export const InputError = styled.span`
+  padding-left: 0.25rem;
+  font-size: 0.75rem;
+  color: red;
+
+  //rightposition: absolute;
+  //margin-top: 30px;
 `;
